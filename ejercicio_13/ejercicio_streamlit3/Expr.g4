@@ -1,0 +1,46 @@
+grammar Expr;
+
+root: expr EOF ;    
+
+expr: INT | DOUBLE | NULL | CREATE | SELECT | TABLE | FROM | WHERE | SERIAL | PRIMARY | KEY | LLLAVE | RLLAVE | LPAREN | RPAREN | LCORCH | RCORCH | PUNTO | COMMA | PUNTOC | MAYOR | ASIGN | MENOR | DIF | AND | NUM | IDT | ASTERISK | CADENA | INSERT | INTO | VALUES | ON | INNER | JOIN | CADENACOMSEN | GUION | VAR ;
+
+ASTERISK: '*';
+INT:'INTEGER';
+DOUBLE: 'DOUBLE';
+NUM: [0-9]+(.[0-9])*;
+VAR : 'VARCHAR';
+NULL: 'NULL';
+CREATE: 'CREATE';
+SELECT: 'SELECT';
+TABLE: 'TABLE';
+FROM: 'FROM';
+WHERE: 'WHERE';
+SERIAL: 'SERIAL';
+PRIMARY: 'PRIMARY';
+INSERT: 'INSERT';
+INTO: 'INTO';
+KEY: 'KEY';
+NOT: 'NOT';
+VALUES: 'VALUES';
+ON: 'ON';
+INNER: 'INNER';
+JOIN: 'JOIN';
+LLLAVE: '{';
+RLLAVE: '}';
+LPAREN: '(';
+RPAREN: ')';
+LCORCH: '[';
+RCORCH: ']';
+PUNTO: '.';
+COMMA: ',';
+PUNTOC: ';';
+MAYOR: '>';
+ASIGN: '=';
+MENOR: '<';
+DIF: '!';
+AND: '&';
+GUION: '_';
+CADENACOMSEN: '\'' (~['])* '\'';
+CADENA: '"'(~["\\\r\n])*'"';
+IDT: [a-zA-Z0-9]+;
+WS: [ \t\r\n]+ -> skip ;
