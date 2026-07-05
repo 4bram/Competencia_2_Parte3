@@ -1,29 +1,20 @@
 grammar Expr;
 
-root: expr EOF ;    
+root : expr EOF;
 
-expr: NUM | IDF | PUBLIC | CLASS | STATIC | VOID | MAIN | INT ;
+expr : UPDATE IDT SET IDT EQUAL strr COMMA IDT EQUAL strr WHERE IDT EQUAL NUM SEMI;
+strr : STRW | STR;
 
-PUBLIC: 'public' ;
-CLASS: 'class' ;
-STATIC: 'static' ;
-VOID: 'void' ;
-MAIN: 'main' ;
-INT: 'int' ;
-SYSTEM: 'System' ;
-DOT: '.' ;
-OUT: 'out' ;
-PRINTLN: 'println' ;
-CADENA: '"' (~["\\\r\n])* '"' ;
-MAS: '+' ;
-LA: '{' ;
-LC: '}' ;
-PA: '(' ;
-PC: ')' ;
-CA: '[' ;
-CC: ']' ;
-ASIG: '=' ;
+UPDATE : 'update';
+SET : 'set';
+WHERE : 'where';
+EQUAL : '=';
+COMMA : ',';
+SEMI : ';';
+THING : '’';
+
+STRW: '\'' [a-zA-Z_ ]* '’';
+IDT: [a-zA-Z_][a-zA-Z0-9_]* ;
 NUM: [0-9]+ ;
-IDF: [a-zA-Z0-9]+ ;
-FIN: ';' ;
 WS: [ \t\r\n]+ -> skip ;
+STR: '\'' [a-zA-Z_ ]* '\'' ;
