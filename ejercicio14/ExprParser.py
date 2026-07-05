@@ -10,9 +10,14 @@ else:
 
 def serializedATN():
     return [
-        4,1,23,10,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,1,1,1,1,1,0,0,2,0,2,0,1,
-        2,0,1,6,20,21,7,0,4,1,0,0,0,2,7,1,0,0,0,4,5,3,2,1,0,5,6,5,0,0,1,
-        6,1,1,0,0,0,7,8,7,0,0,0,8,3,1,0,0,0,0
+        4,1,12,28,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,2,0,0,3,
+        0,2,4,0,1,2,0,8,8,12,12,24,0,6,1,0,0,0,2,9,1,0,0,0,4,25,1,0,0,0,
+        6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,9,10,5,1,0,0,10,11,5,9,0,0,11,
+        12,5,2,0,0,12,13,5,9,0,0,13,14,5,4,0,0,14,15,3,4,2,0,15,16,5,5,0,
+        0,16,17,5,9,0,0,17,18,5,4,0,0,18,19,3,4,2,0,19,20,5,3,0,0,20,21,
+        5,9,0,0,21,22,5,4,0,0,22,23,5,10,0,0,23,24,5,6,0,0,24,3,1,0,0,0,
+        25,26,7,0,0,0,26,5,1,0,0,0,0
     ]
 
 class ExprParser ( Parser ):
@@ -25,45 +30,31 @@ class ExprParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'public'", "'class'", "'static'", "'void'", 
-                     "'main'", "'int'", "'System'", "'.'", "'out'", "'println'", 
-                     "<INVALID>", "'+'", "'{'", "'}'", "'('", "')'", "'['", 
-                     "']'", "'='", "<INVALID>", "<INVALID>", "';'" ]
+    literalNames = [ "<INVALID>", "'update'", "'set'", "'where'", "'='", 
+                     "','", "';'", "'\\u2019'" ]
 
-    symbolicNames = [ "<INVALID>", "PUBLIC", "CLASS", "STATIC", "VOID", 
-                      "MAIN", "INT", "SYSTEM", "DOT", "OUT", "PRINTLN", 
-                      "CADENA", "MAS", "LA", "LC", "PA", "PC", "CA", "CC", 
-                      "ASIG", "NUM", "IDF", "FIN", "WS" ]
+    symbolicNames = [ "<INVALID>", "UPDATE", "SET", "WHERE", "EQUAL", "COMMA", 
+                      "SEMI", "THING", "STRW", "IDT", "NUM", "WS", "STR" ]
 
     RULE_root = 0
     RULE_expr = 1
+    RULE_strr = 2
 
-    ruleNames =  [ "root", "expr" ]
+    ruleNames =  [ "root", "expr", "strr" ]
 
     EOF = Token.EOF
-    PUBLIC=1
-    CLASS=2
-    STATIC=3
-    VOID=4
-    MAIN=5
-    INT=6
-    SYSTEM=7
-    DOT=8
-    OUT=9
-    PRINTLN=10
-    CADENA=11
-    MAS=12
-    LA=13
-    LC=14
-    PA=15
-    PC=16
-    CA=17
-    CC=18
-    ASIG=19
-    NUM=20
-    IDF=21
-    FIN=22
-    WS=23
+    UPDATE=1
+    SET=2
+    WHERE=3
+    EQUAL=4
+    COMMA=5
+    SEMI=6
+    THING=7
+    STRW=8
+    IDT=9
+    NUM=10
+    WS=11
+    STR=12
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -100,9 +91,9 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 0, self.RULE_root)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 4
+            self.state = 6
             self.expr()
-            self.state = 5
+            self.state = 7
             self.match(ExprParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -120,29 +111,42 @@ class ExprParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
+        def UPDATE(self):
+            return self.getToken(ExprParser.UPDATE, 0)
+
+        def IDT(self, i:int=None):
+            if i is None:
+                return self.getTokens(ExprParser.IDT)
+            else:
+                return self.getToken(ExprParser.IDT, i)
+
+        def SET(self):
+            return self.getToken(ExprParser.SET, 0)
+
+        def EQUAL(self, i:int=None):
+            if i is None:
+                return self.getTokens(ExprParser.EQUAL)
+            else:
+                return self.getToken(ExprParser.EQUAL, i)
+
+        def strr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(ExprParser.StrrContext)
+            else:
+                return self.getTypedRuleContext(ExprParser.StrrContext,i)
+
+
+        def COMMA(self):
+            return self.getToken(ExprParser.COMMA, 0)
+
+        def WHERE(self):
+            return self.getToken(ExprParser.WHERE, 0)
+
         def NUM(self):
             return self.getToken(ExprParser.NUM, 0)
 
-        def IDF(self):
-            return self.getToken(ExprParser.IDF, 0)
-
-        def PUBLIC(self):
-            return self.getToken(ExprParser.PUBLIC, 0)
-
-        def CLASS(self):
-            return self.getToken(ExprParser.CLASS, 0)
-
-        def STATIC(self):
-            return self.getToken(ExprParser.STATIC, 0)
-
-        def VOID(self):
-            return self.getToken(ExprParser.VOID, 0)
-
-        def MAIN(self):
-            return self.getToken(ExprParser.MAIN, 0)
-
-        def INT(self):
-            return self.getToken(ExprParser.INT, 0)
+        def SEMI(self):
+            return self.getToken(ExprParser.SEMI, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_expr
@@ -154,12 +158,76 @@ class ExprParser ( Parser ):
 
         localctx = ExprParser.ExprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_expr)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 9
+            self.match(ExprParser.UPDATE)
+            self.state = 10
+            self.match(ExprParser.IDT)
+            self.state = 11
+            self.match(ExprParser.SET)
+            self.state = 12
+            self.match(ExprParser.IDT)
+            self.state = 13
+            self.match(ExprParser.EQUAL)
+            self.state = 14
+            self.strr()
+            self.state = 15
+            self.match(ExprParser.COMMA)
+            self.state = 16
+            self.match(ExprParser.IDT)
+            self.state = 17
+            self.match(ExprParser.EQUAL)
+            self.state = 18
+            self.strr()
+            self.state = 19
+            self.match(ExprParser.WHERE)
+            self.state = 20
+            self.match(ExprParser.IDT)
+            self.state = 21
+            self.match(ExprParser.EQUAL)
+            self.state = 22
+            self.match(ExprParser.NUM)
+            self.state = 23
+            self.match(ExprParser.SEMI)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class StrrContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def STRW(self):
+            return self.getToken(ExprParser.STRW, 0)
+
+        def STR(self):
+            return self.getToken(ExprParser.STR, 0)
+
+        def getRuleIndex(self):
+            return ExprParser.RULE_strr
+
+
+
+
+    def strr(self):
+
+        localctx = ExprParser.StrrContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 4, self.RULE_strr)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 7
+            self.state = 25
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 3145854) != 0)):
+            if not(_la==8 or _la==12):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
